@@ -1,0 +1,236 @@
+﻿@model PlantTrade.Models.AdminReport
+
+@{
+    ViewData["Title"] = "Admin gerapporteerd Profiel";
+}
+
+<script>
+    function confirmDiv(kind) {
+        if (document.getElementById(kind).style.display == "block") {
+            document.getElementById(kind).style.display = "none";
+            document.getElementById("ReportTutorialButtons").style.display = "block";
+        }
+        else {
+            document.getElementById("ReportTutorialButtons").style.display = "none";
+            document.getElementById(kind).style.display = "block";
+        }
+    };
+
+    function toggleActive(id) {
+        var elements = document.getElementsByName("nav-gegevens");
+        for (var i = 0; i < elements.length; i++) {
+            if (elements[i].id == id && elements[i].classList.contains("GebruikerMenuItem")) {
+                elements[i].classList.add("GebruikerMenuItemactive");
+                elements[i].classList.remove("GebruikerMenuItem");
+                toggleShow(id)
+            }
+            else if (elements[i].id != id && elements[i].classList.contains("GebruikerMenuItemactive")) {
+                elements[i].classList.add("GebruikerMenuItem");
+                elements[i].classList.remove("GebruikerMenuItemactive");
+            }
+        };
+    };
+
+    function toggleShow(kind) {
+        if (kind == "gegevens") {
+            document.getElementById("profiel-gegevens").removeAttribute("style");
+            document.getElementById("profiel-items").style.display = "none";
+            document.getElementById("profiel-tutorials").style.display = "none";
+        }
+        else if (kind == "items") {
+            document.getElementById("profiel-items").removeAttribute("style");
+            document.getElementById("profiel-gegevens").style.display = "none";
+            document.getElementById("profiel-tutorials").style.display = "none";
+        }
+        else if (kind == "tutorials") {
+            document.getElementById("profiel-tutorials").removeAttribute("style");
+            document.getElementById("profiel-items").style.display = "none";
+            document.getElementById("profiel-gegevens").style.display = "none";
+        }
+    }
+
+    window.onload = function () {
+        toggleActive("gegevens");
+    }
+</script>
+
+<div class="d-flex justify-content-center mb-3">
+    <div class="row GebruikerMenu">
+        <div name="nav-gegevens" id="gegevens" class="nav-link GebruikerMenuItemactive" onclick="toggleActive('gegevens')" style="cursor:pointer;">
+            Gegevens
+        </div>
+        <div name="nav-gegevens" id="items" class="nav-link GebruikerMenuItem" onclick="toggleActive('items')" style="cursor:pointer;">
+            Items
+        </div>
+        <div name="nav-gegevens" id="tutorials" class="nav-link GebruikerMenuItem" onclick="toggleActive('tutorials')" style="cursor:pointer;">
+            Tutorials
+        </div>
+    </div>
+</div>
+
+<div id="profiel-items" style="display:none;">
+    @if (Model.Profile.Item.Count < 1)
+    {
+        <h1 class="display-4 text-center pb-5"> Geen geüploade items</h1>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-2 col-md-2"></div>
+            <div class="col-lg-8 col-md-8">
+                <div class="home-content">
+                    <div class="cards row justify-content-center">
+                        @foreach (Item item in Model.Profile.Item)
+                        {
+                            <div class="card col-sm-12 col-md-5 col-lg-3">
+                                <img src=@Html.DisplayFor(modelItem => item.Picture) class="card-img-top" alt="Item" />
+                                <div class="card-body">
+                                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                                    <p class="card-text">@Html.DisplayFor(modelItem => item.Kind)</p>
+                                    <a asp-controller="Items" asp-action="ViewItem" asp-route-id="@item.Id" class="btn btn-primary">Zie meer</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2"></div>
+        </div>
+    }
+</div>
+
+<div id="profiel-gegevens" class="row">
+    <div class="col-lg-2 col-md-2"></div>
+    <div class="col-lg-8 col-md-8">
+        <table class="table">
+            <tr>
+                <th style="width:25%">Gebruikersnaam</th>
+                <th style="width:30%">Specialisme</th>
+                <th style="width:45%">Over gebruiker</th>
+            </tr>
+            <tr>
+                <td>@Model.Profile.UserName</td>
+                @if (@Model.Profile.Specialisme != null)
+                {
+                    <td>@Model.Profile.Specialisme</td>
+                }
+                else
+                {
+                    <td>Geen gegeven</td>
+                }
+                @if (@Model.Profile.Specialisme != null)
+                {
+                    <td>@Model.Profile.About</td>
+                }
+                else
+                {
+                    <td>Geen gegeven</td>
+                }
+            </tr>
+        </table>
+    </div>
+    <div class="col-lg-2 col-md-2"></div>
+</div>
+
+<div id="profiel-tutorials" style="display:none;">
+    @if (Model.Profile.Item.Count < 1)
+    {
+        <h1 class="display-4 text-center pb-5"> Geen geüploade tutorials</h1>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-2 col-md-2"></div>
+            <div class="col-lg-8 col-md-8">
+                @foreach (Tutorial tutorial in Model.Profile.Tutorial)
+                {
+                    <div class="row pb-4">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <iframe style="width:100%; height:250px" src="@Html.DisplayFor(m => tutorial.Link)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-12 my-lg-auto my-md-auto my-sm-0">
+                            <div class="">
+                                <font size="+2">
+                                    @Html.DisplayFor(m => tutorial.Title)
+                                </font>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-2 col-md-2"></div>
+        </div>
+    }
+</div>
+
+
+<h1 class="display-4 text-center mt-3">Reports</h1>
+<div class="row mt-3">
+    <div class="col-lg-2 col-md-2"></div>
+    <div class="col-lg-8 col-md-8 col-sm-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Gebruikersnaam
+                    </th>
+                    <th>
+                        Omschrijving
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Report report in Model.Reports)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => report.User.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => report.Description)
+                        </td>
+                        <td>
+                            <a asp-action="DeleteReport" asp-route-id="@report.Id">Verwijderen</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mb-3">
+    <div id="ReportTutorialButtons" class="text-center mt-5">
+        @if (!Model.Profile.EmailConfirmed)
+        {
+            <a class="btn btn-primary mr-1" onclick="confirmDiv('ResConfirm')" style="color: white; cursor: pointer;">Profiel herstellen</a>
+        }
+        <a class="btn btn-primary mr-1" onclick="confirmDiv('DelConfirm')" style="color: white; cursor: pointer;">Profiel verwijderen</a>
+    </div>
+
+
+    <div id="DelConfirm" style="display: none;" class="text-center mt-5">
+        <h4>Weet je zeker dat je dit item wil verwijderen?</h4>
+        <br />
+        @using (Html.BeginForm(new { controller = "Admin", action = "deleteProfile" }))
+        {
+            <input type="hidden" name="id" value="@Model.Profile.Id" />
+            <input type="hidden" name="page" value="AdminReport" />
+            <input id="submitAdmin" type="submit" value="Bevestigen" class="btn btn-primary" />
+            <a class="btn btn-primary mr-1" onclick="confirmDiv('DelConfirm')" style="color: white; cursor: pointer;">Annuleren</a>
+        }
+    </div>
+
+    <div id="ResConfirm" style="display: none;" class="text-center mt-5">
+        <h4>Weet je zeker dat je dit item wil Herstellen?</h4>
+        Alle reports worden verwijderd
+        <br /><br />
+        @using (Html.BeginForm(new { controller = "Admin", action = "restoreReportedProfiel" }))
+        {
+            <input type="hidden" name="id" value="@Model.Profile.Id" />
+            <input id="submitAdmin" type="submit" value="Bevestigen" class="btn btn-primary" />
+            <a class="btn btn-primary mr-1" onclick="confirmDiv('ResConfirm')" style="color: white; cursor: pointer;">Annuleren</a>
+        }
+    </div>
+</div>

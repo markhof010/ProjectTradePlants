@@ -1,0 +1,185 @@
+﻿/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 43px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 45px; /* Vertically center the text there */
+}
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+/* Bootstrap overrides and globals
+-------------------------------------------------- */
+nav, footer, nav a, footer a {
+    color: #F3F9E3;
+    background-color: #6AB547;
+    border-radius: 5px;
+}
+
+    footer a {
+        padding: 5px;
+    }
+
+nav, footer {
+    border-radius: 0;
+}
+
+    nav .navbar-brand:hover {
+        color: #FFF;
+    }
+
+    nav .navbar-collapse a:hover, footer a:hover, nav .navbar-collapse a:active, footer a:active {
+        background-color: #4A9537;
+        color: #fff;
+    }
+
+footer {
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+/*body > .container {
+    margin: 0 25px;
+}*/
+
+body {
+    background-color: #FFF;
+}
+
+main {
+    /*             viewport header  footer             */
+    min-height: calc(100vh - 56px - 44.8px);
+    padding-left: 30px;
+    padding-right: 30px;
+    /*background-color: rgba(255, 255, 255, 1);*/
+    background-color: #FFF;
+}
+
+.btn.btn-primary {
+    background-color: #D8829D;
+    outline-color: #B4654A;
+    border: none;
+}
+
+a.btn.btn-primary:hover {
+    background-color: #C4756A;
+}
+
+a.btn.btn-primary:active {
+    background-color: #B4654A !important;
+    border-color: #B4654A !important;
+}
+
+a.btn.btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem #B4654A66 !important;
+}
+
+/* Bootstrap class overrides
+-------------------------------------------------- */
+.card, .card-img-top {
+    border: none;
+    border-radius: 0;
+}
+
+.no-pad {
+    padding: 0;
+}
+
+
+input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    background-color: lightgreen;
+
+}
+
+.slider-md {
+    width: 75% !important;
+}
+input[type=range]::-webkit-slider-thumb {
+
+}
+
+/* Feedback button
+-------------------------------------------------- */
+.btn.btn-primary-feedback {
+    background-color: #6AB547;
+    color: white;
+    outline-color: #B4654A;
+    border: none;
+}
+
+a.btn.btn-primary-feedback:hover {
+    background-color: #4A9537;
+}
+
+a.btn.btn-primary-feedback:active {
+    background-color: #B4654A !important;
+    border-color: #B4654A !important;
+}
+
+a.btn.btn-primary-feedback:focus {
+    box-shadow: 0 0 0 0.2rem #B4654A66 !important;
+}
+
+div.feedback-div {
+    position: absolute;
+    bottom: 50px;
+    right: 20px;
+}

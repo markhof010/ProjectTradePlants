@@ -1,0 +1,71 @@
+﻿@model IEnumerable<PlantTrade.Models.Feedback>
+
+@{
+    ViewData["Title"] = "Admin Feedback";
+}
+<div class="row justify-content-center pt-3">
+    <div class="col-md-2 my-5">
+        <ul class="nav nav-pills flex-column GebruikerMenu">
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminRights" asp-controller="Admin" asp-action="AdminRights">Admins beheren</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminReports" asp-controller="Admin" asp-action="AdminReport">Report</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link GebruikerMenuItemactive" id="adminFeedback" asp-controller="Admin" asp-action="AdminFeedback">Feedback</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminItems" asp-controller="Admin" asp-action="AdminItems">Items</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminTutorials" asp-controller="Admin" asp-action="AdminTutorials">Tutorials</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminProfielen" asp-controller="Admin" asp-action="AdminProfiles">Profielen</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-lg-1 col-md-1"></div>
+
+    <div class="col-lg-7 col-md-7 p-3">
+
+        <div class="home-content">
+            <div class="cards row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width:20%">
+                                Pagina
+                            </th>
+                            <th style="width:70%">
+                                Inhoud
+                            </th>
+                            <th style="width:10%">
+                                
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="conversations">
+                        @foreach (Feedback feedback in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(m => feedback.Page)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => feedback.FeedbackText)
+                                </td>
+                                <td>
+                                    <a asp-action="DeleteFeedback" asp-route-id="@feedback.Id">Verwijderen</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

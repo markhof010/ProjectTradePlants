@@ -1,0 +1,168 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@model PlantTrade.Models.Item
+
+@{
+    ViewData["Title"] = "Item wijzigen";
+}
+
+<script>
+    function checkSize() {
+        var pic = document.getElementById("inputImage")
+        if (pic.files.length != 0 && pic != null) {
+            var picSize = pic.files[0].size;
+            if (picSize < 921600) {
+                document.getElementById("checkSizeText").style.display = "none";
+                return true;
+            }
+            else {
+                document.getElementById("checkSizeText").style.display = "block";
+                return false
+            }
+        }
+        document.getElementById("checkSizeText").style.display = "none";
+        return true;
+    }
+
+    function checkEmpty() {
+        var nameEmpty = document.getElementById("inputName").value.length == 0;
+        var desEmpty = document.getElementById("inputDescription").value.length == 0;
+        if (!checkSize() || nameEmpty || desEmpty) {
+            document.getElementById("inputSubmit").setAttribute('disabled', 'disabled');
+        }
+        else {
+            document.getElementById("inputSubmit").removeAttribute("disabled");
+        }
+    }
+</script>
+
+<h1 class="display-4 text-center">Product aanpassen</h1>
+
+<hr />
+
+<form asp-action="Edit" enctype="multipart/form-data" oninput="outputSunhours.value=parseInt(inputSunhours.value)" class="pt-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Picture" />
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="Available" />
+
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Offer" class="control-label">Aanbod</label>
+                <select class="form-control" asp-for="Offer">
+                    <option>Zaad</option>
+                    <option>Bol</option>
+                    <option>Stek</option>
+                    <option>Zaailing</option>
+                    <option>Volgroeide plant</option>
+                </select>
+                <span asp-validation-for="Offer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kind" class="control-label">Soort</label>
+                <select class="form-control" asp-for="Kind">
+                    <option>Boom</option>
+                    <option>Struik</option>
+                    <option>Bloem</option>
+                    <option>Kruidachtige</option>
+                    <option>Bodembedekker</option>
+                    <option>Klimplant</option>
+                    <option>Waterplant</option>
+                </select>
+                <span asp-validation-for="Kind" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Plant naam *</label>
+                <input id="inputName" asp-for="Name" class="form-control" onchange="checkEmpty()" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LatinName" class="control-label">Latijnse naam</label>
+                <input asp-for="LatinName" class="form-control" />
+                <span asp-validation-for="LatinName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <output name="outputSunhours" for="inputSunhours">
+                    @Html.DisplayFor(m => m.SunHours)
+                </output>
+                <label asp-for="SunHours" class="control-label">Zon uren * (voer 0 in wanneer het aantal zon uren niet bekent is)</label>
+                <input id="inputSunhours" type="range" min="0" max="12" asp-for="SunHours" />
+                <span asp-validation-for="SunHours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Water" class="control-label">Vochtigheid</label>
+                <select class="form-control" asp-for="Water">
+                    <option>Nat</option>
+                    <option>Gemiddeld</option>
+                    <option>Droog</option>
+                    <option>Geen eisen</option>
+                    <option>Weet niet</option>
+                </select>
+                <span asp-validation-for="Water" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ground" class="control-label">Bodem</label>
+                <select class="form-control" asp-for="Ground">
+                    <option>Kalkrijk</option>
+                    <option>Leem</option>
+                    <option>Zuur</option>
+                    <option>Kijk in de omschrijving</option>
+                    <option>Geen eisen</option>
+                </select>
+                <span asp-validation-for="Ground" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TransactionKind" class="control-label">Dit product</label>
+                <select class="form-control" asp-for="TransactionKind">
+                    <option>Ruilen</option>
+                    <option>Gratis ophalen</option>
+                </select>
+                <span asp-validation-for="TransactionKind" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Omschrijving *</label>
+                <textarea id="inputDescription" type="text" asp-for="Description" class="form-control" oninput="checkEmpty()" rows="6" style="resize:none;" maxlength="500"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="File" class="control-label">Foto</label>
+                <img src="@Html.DisplayFor(item => item.Picture)" class="mijn-item-image pb-1" />
+                <input id="inputImage" asp-for="File" accept="image/png, Image/jpeg, image/jpg" onchange="checkEmpty()" />
+                <span asp-validation-for="File" class="text-danger"></span>
+                <div id="checkSizeText" class="mb-1" style="display: none; color:red;">
+                    De foto moet kleiner zijn dan 900kB. Dit kan je in paint doen of door de foto online te croppen.
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+
+    <div class="form-group text-center pt-4">
+        <input id="inputSubmit" type="submit" value="Opslaan" class="btn btn-primary" />
+    </div>
+
+</form>
+
+<div class="row">
+    <div class="feedback-div">
+        <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Wijzig-item pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+    </div>
+</div>

@@ -1,0 +1,153 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@model PlantTrade.Models.Item
+@{
+    ViewData["Title"] = "Item Details";
+}
+@{ var exits = false;}
+<div class="container">
+    <div class="row mijn-item mt-4 p-3">
+
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <a class="btn btn-primary mb-2" asp-action="UserInformation" asp-route-id="@Model.UserId">Gebruiker: @Html.DisplayFor(model => model.User.UserName)</a>
+            <img src=@Html.DisplayFor(model => model.Picture) class="mijn-item-image mb-1" />
+            <strong>Omschrijving</strong>
+            <p> @Html.DisplayFor(model => model.Description)</p>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 my-auto">
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        Aanbod
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Offer)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Soort
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Kind)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Plant naam
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Latijnse naam
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @if (Html.ViewData.Model.LatinName != null)
+                        {
+                            @Html.DisplayFor(model => model.LatinName);
+                        }
+                        else
+                        {
+                            <div>Niet Gegeven</div>
+                        }
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Zon uren
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.SunHours)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Water
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Water)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Bodem
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Ground)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Deze item
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.TransactionKind)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            @foreach (Conversation conversation in Model.Conversation)
+            {
+                if (conversation.UserId == UserManager.GetUserId(User) && conversation.TraderId != UserManager.GetUserId(User))
+                {
+                    { exits = true; }
+                    <div class="messenger init small-chat">
+                        <div class="msg-header">
+                            <div class="msg-reciever">
+                                <img class="msg-profile-pic" src=@Html.DisplayFor(model => model.Picture) />
+                                <div class="msg-profile-details">
+                                    <h3 class="reciever-name">@Html.DisplayFor(model => model.User.UserName)</h3>
+                                    <p>Gebruiker</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="msg-body">
+
+                        </div>
+                        <div class="msg-footer">
+                            <textarea maxlength="200" rows="1" placeholder="Schrijf een bericht..." class="msg-chatbox"></textarea>
+                            <img class="msg-send" src="~/img/send_arrow.png" />
+                        </div>
+                    </div>
+
+                    { break; }
+                }
+            }
+            @if (!exits && Model.UserId != UserManager.GetUserId(User))
+            {
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <div class="create-convo">
+                        <form asp-controller="Messages" asp-action="CreateConversation">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group hidden">
+                                <label asp-for="Id" class="control-label"></label>
+                                <input type="text" asp-for="Id" class="form-control" asp-items="Id" value="@Model.Id" />
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Start gesprek" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                }
+            }
+
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <a class="btn btn-primary-report mb-2" asp-controller="Report" asp-action="ReportPage" asp-route-kind="Item" asp-route-reportId="@Model.Id">Report</a>
+            }
+            else
+            {
+                <a class="btn btn-primary-report-disabled mb-2" href="">Report</a>
+            }
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="feedback-div">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Item-details pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+        }
+        else
+        {
+            <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Item-details pagina">Feedback</a>
+        }
+    </div>
+</div>

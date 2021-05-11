@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@model IEnumerable<PlantTrade.Models.Item>
+
+@{
+    ViewData["Title"] = "Mijn Items";
+}
+<div class="home-content">
+    <div class="text-center">
+        <h1 class="display-4">Mijn Items</h1>
+        <p><a asp-action="CreateItem" class="btn btn-primary">Maak een nieuw item aan</a></p>
+    </div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="cards row col-10">
+            @foreach (var item in Model)
+            {
+
+                <div class="card col-sm-12 col-md-6 col-lg-3">
+                    <img src=@Html.DisplayFor(modelItem => item.Picture) class="card-img-top" alt="Item" />
+
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Kind)</p>
+                        <a asp-action="mijnItem" asp-route-id="@item.Id" class="btn btn-primary">Zie meer</a>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="feedback-div">
+        <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Mijn-items pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+    </div>
+</div>

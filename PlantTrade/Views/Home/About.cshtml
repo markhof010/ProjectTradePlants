@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = "Over ons";
+}
+<div class="justify-content-center">
+    <h1 class="display-4 text-center">Over ons</h1>
+
+    <div class="row pt-5">
+        <div class="col-md-1"></div>
+        <div class="col-md-3 my-lg-3">
+            <font size="+1">
+                <p>
+                    <strong style="color: #6AB547;">Stadskwekerij De Kas</strong> is een bewonersinitiatief van Eva Bes en Marja Versteeg, twee tuinvrouwen uit Rotterdam Noord met hart voor de natuur én voor mensen. Wij willen ons inzetten voor het verhogen van biodiversiteit in de stad en de verbinding tussen mensen en organisaties.
+                </p>
+                <p>
+                    In 2018 hebben we stichting Stadskwekerij De Kas opgericht. Onze thuisbasis is een kassencomplex in het hartje van Rotterdam. Daar hebben we <strong style="color: #6AB547;">een duurzame kwekerij met inspiratietuin.</strong>
+                </p>
+            </font>
+        </div>
+        <div class="col-md-4">
+            <img src="/img/de_kas.png" style="width: 100%;height: auto; object-fit: cover;" alt="Item" />
+        </div>
+        <div class="col-md-3 my-lg-4">
+            <font size="+1">
+                Met Stekoverflow willen we samen met alle tuinliefhebbers die zónder gif werken, als het ware één grote duurzame kwekerij vormen waardoor we <strong style="color: #6AB547;">samen kunnen zorgen voor nog meer gifvrij en betaalbaar groen!</strong>
+            </font>
+        </div>
+    </div>
+    <div class="row">
+        <div class="feedback-div">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Over ons pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+            }
+            else
+            {
+                <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Over ons pagina">Feedback</a>
+            }
+        </div>
+    </div>
+</div>

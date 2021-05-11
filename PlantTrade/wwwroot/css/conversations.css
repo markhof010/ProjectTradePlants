@@ -1,0 +1,13 @@
+﻿.conversations tr {
+    background-color: #FFF;
+}
+
+.conversations tr:hover {
+    margin: 20px 0;
+    background-color: #EEE;
+    outline: 1px solid #000;
+    cursor: pointer;
+    transform: scale(1.01);
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.5);
+    transition: 0.1s;
+}

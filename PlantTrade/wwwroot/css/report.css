@@ -1,0 +1,28 @@
+﻿.btn.btn-primary-report {
+    background-color: #D92121;
+    color: white;
+    outline-color: #B4654A;
+    border: none;
+}
+
+a.btn.btn-primary-report:hover {
+    background-color: #9B111E;
+}
+
+a.btn.btn-primary-report:active {
+    background-color: #B4654A !important;
+    border-color: #B4654A !important;
+}
+
+a.btn.btn-primary-report:focus {
+    box-shadow: 0 0 0 0.2rem #B4654A66 !important;
+}
+
+
+.btn.btn-primary-report-disabled {
+    background-color: #ff7f7f;
+    color: white;
+    outline-color: #B4654A;
+    border: none;
+    pointer-events:none;
+}

@@ -1,0 +1,41 @@
+﻿@using PlantTrade.Models;
+@using Microsoft.AspNetCore.Identity;
+@using PlantTrade.Views.Shared;
+@inject UserManager<User> UserManager
+@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout;
+    }
+    else
+    {
+        Layout = "/Views/Shared/_Layout.cshtml";
+    }
+}
+
+
+<div>
+    <div class="pt-3">
+        <h1>Uw account</h1>
+    </div>
+    <hr />
+    <div class="row pt-2">
+        <div class="col-md-3">
+            <partial name="_ProfileNav" />
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-8 p-1">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="feedback-div">
+        <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="@ViewData["Title"]" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

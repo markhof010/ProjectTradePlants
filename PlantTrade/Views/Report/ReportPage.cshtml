@@ -1,0 +1,37 @@
+﻿@model PlantTrade.Models.Report
+
+@{
+    ViewData["Title"] = "Report pagina";
+}
+
+<script>
+    function checkEmpty() {
+        var desEmpty = document.getElementById("inputDescription").value.length == 0;
+        if (desEmpty) {
+            document.getElementById("inputSubmit").setAttribute('disabled', 'disabled');
+        }
+        else {
+            document.getElementById("inputSubmit").removeAttribute("disabled");
+        }
+    }
+</script>
+
+<div class="row justify-content-center">
+    <div class="col-sm-11 col-md-9 col-lg-7 text-center">
+        <form asp-action="CreateReport" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Kind"/>
+            <input type="hidden" asp-for="ReportId"/>
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label display-4 mb-3">
+                   Wat wil je raporteren
+                </label>
+                <textarea id="inputDescription" type="text" asp-for="Description" class="form-control" oninput="checkEmpty()" rows="6" style="resize:none;" maxlength="500"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <input id="inputSubmit" type="submit" value="Report" class="btn btn-primary" disabled/>
+
+        </form>
+    </div>
+</div>

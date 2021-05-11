@@ -1,0 +1,33 @@
+﻿/* Home page
+-------------------------------------------------- */
+.home-content .cards {
+    display: flex;
+}
+
+.home-content .text-center {
+    padding: 15px 0;
+}
+
+.home-content .card {
+    margin-bottom: 30px;
+    background-color: inherit;
+}
+
+.home-content .card-img-top {
+    height: 230px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    object-fit: cover;
+}
+
+.home-content .card .card-body {
+    background-color: #F3F9E3;
+}
+
+.filter {
+    display: none;
+}
+
+.show {
+    display: block;
+}

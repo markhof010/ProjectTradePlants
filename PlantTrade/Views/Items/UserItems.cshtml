@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@model IEnumerable<PlantTrade.Models.Item>
+
+@{
+    ViewData["Title"] = "Gebruiker Items";
+}
+
+<div class="container">
+    <div class="text-right mt-2">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a class="btn btn-primary-report mb-2" asp-controller="Report" asp-action="ReportPage" asp-route-kind="Person" asp-route-reportId="@ViewBag.userId">Report</a>
+        }
+        else
+        {
+            <a class="btn btn-primary-report-disabled mb-2" href="">Report</a>
+        }
+    </div>
+    <div class="row ItemUser mt-md-5 justify-content-center">
+        <div class="col-md-2 my-5">
+            <ul class="nav nav-pills flex-column GebruikerMenu">
+                <li class="nav-item GebruikerMenuItem">
+                    <a class="nav-link" id="profile" asp-controller="Items" asp-action="UserInformation" asp-route-id="@ViewBag.userId">Profiel</a>
+                </li>
+                <li class="nav-item GebruikerMenuItem">
+                    <a class="nav-link GebruikerMenuItemactive" id="Producten" asp-controller="Items" asp-action="UserItems">Items</a>
+                </li>
+                <li class="nav-item GebruikerMenuItem">
+                    <a class="nav-link" id="tutorials" asp-controller="Items" asp-action="UserTutorials" asp-route-id="@ViewBag.userId">Tutorials</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-md-10">
+            <div class="home-content">
+                <div class="cards row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="card col-sm-12 col-md-6 col-lg-3">
+                            <img src=@Html.DisplayFor(modelItem => item.Picture) class="card-img-top" alt="Item" />
+
+                            <div class="card-body align-content-center">
+                                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                                <p class="card-text">@Html.DisplayFor(modelItem => item.Kind)</p>
+                                <a asp-action="ViewItem" asp-route-id="@item.Id" class="btn btn-primary">Zie meer</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="feedback-div">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Gebruiker-items pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+        }
+        else
+        {
+            <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Gebruiker-items pagina">Feedback</a>
+        }
+    </div>
+</div>

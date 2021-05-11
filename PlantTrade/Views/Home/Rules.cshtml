@@ -1,0 +1,67 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{
+    ViewData["Title"] = "Regels";
+}
+<div class="justify-content-center">
+    <h1 class="display-4 text-center">Regels</h1>
+
+    <p class="text-center mt-5">
+        <font size="+2">
+            Dit zijn de regels waarmee je rekening moet houden wanneer je gebruik maakt van StekOverflow
+        </font>
+    </p>
+
+    <div class="row pt-5">
+        <div class="col-md-2"></div>
+        <div class="col-lg-8">
+            <ul>
+                <li class="mb-2">
+                    <font size="+1">
+                        Op StekOverflow worden alleen tuinplanten aangeboden. Het gaat ons immers om de biodiversiteit.
+                    </font>
+                </li>
+                <li class="mb-2">
+                    <font size="+1">
+                        Het plantmateriaal dat je aanbiedt, is – voor zover je weet - gekweekt zonder pesticiden of andere gifstoffen.
+                    </font>
+                </li>
+                <li class="mb-2">
+                    <font size="+1">
+                        StekOverflow is een platform om te ruilen en/of te delen met elkaar. Het platform is niet bedoeld voor commerciële doeleinden. Er wordt dus niet gehandeld met geld.
+                    </font>
+                </li>
+                <li class="mb-2">
+                    <font size="+1">
+                        Op StekOverflow mag je geen planten aanbieden die kweekrechtelijk beschermd zijn. Een plant is kweekrechtelijk beschermd als er PBR of PFAFF achter de plantnaam staat, maar soms staat er ook ®. Kijk hiervoor op: <a href="https://www.plantago.nl/kwekersrecht.html" style="color: #6AB547;">https://www.plantago.nl/kwekersrecht.html</a>
+                    </font>
+                </li>
+                <li class="mb-2">
+                    <font size="+1">
+                        StekOverflow is niet verantwoordelijk voor de kwaliteit van het aanbod. Wij proberen de kwaliteit van het aanbod hoog te houden door je in de gelegenheid te stellen de aanbieder en het product achteraf een beoordeling te geven.
+                    </font>
+                </li>
+                <li class="mb-2">
+                    <font size="+1">
+                        We willen graag stimuleren dat het delen en ruilen zo duurzaam mogelijk gebeurt. Daarom zie je bij ieder aanbod direct op welke afstand jet het kunt vinden. We zouden het tof vinden als je de planten zoveel mogelijk lopend, fietsend of met het OV gaat halen.
+                    </font>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="feedback-div">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Regels pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+            }
+            else
+            {
+                <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Regels pagina">Feedback</a>
+            }
+        </div>
+    </div>
+</div>

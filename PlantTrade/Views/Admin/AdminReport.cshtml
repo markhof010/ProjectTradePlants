@@ -1,0 +1,153 @@
+﻿@model IEnumerable<PlantTrade.Models.AdminReport>
+
+@{
+    ViewData["Title"] = "Admin Reports";
+}
+
+<script>
+
+    function openConversation(kind, id) {
+        if (kind == 'Item') {
+            window.location.href = "/Admin/AdminReportDetailsItem/" + id;
+        }
+        else if (kind == 'Tutorial') {
+            window.location.href = "/Admin/AdminReportDetailsTutorial/" + id;
+        }
+        else if (kind == 'Person') {
+            window.location.href = "/Admin/AdminReportDetailsProfiel/" + id;
+        }
+    };
+
+    function toggleActive(id) {
+        var items = document.getElementById('items');
+        var tutorials = document.getElementById('tutorials');
+        var profielen = document.getElementById('profielen');
+        var elements = document.getElementsByName("reportedItems");
+        for (var i = 0; i < elements.length; i++) {
+            if (elements[i].classList.contains(id)) {
+                elements[i].style.display = "table-row";
+            }
+            else {
+                elements[i].style.display = "none";
+            }
+        };
+
+        if (id == 'Item') {
+            if (items.classList.contains("GebruikerMenuItem")) {
+                items.classList.remove("GebruikerMenuItem");
+                items.classList.add("GebruikerMenuItemactive");
+            }
+            if (tutorials.classList.contains("GebruikerMenuItemactive")) {
+                tutorials.classList.remove("GebruikerMenuItemactive");
+                tutorials.classList.add("GebruikerMenuItem");
+            }
+            if (profielen.classList.contains("GebruikerMenuItemactive")) {
+                profielen.classList.remove("GebruikerMenuItemactive");
+                profielen.classList.add("GebruikerMenuItem");
+            }
+        }
+        else if (id == 'Tutorial') {
+            if (tutorials.classList.contains("GebruikerMenuItem")) {
+                tutorials.classList.remove("GebruikerMenuItem");
+                tutorials.classList.add("GebruikerMenuItemactive");
+            }
+            if (items.classList.contains("GebruikerMenuItemactive")) {
+                items.classList.remove("GebruikerMenuItemactive");
+                items.classList.add("GebruikerMenuItem");
+            }
+            if (profielen.classList.contains("GebruikerMenuItemactive")) {
+                profielen.classList.remove("GebruikerMenuItemactive");
+                profielen.classList.add("GebruikerMenuItem");
+            }
+        }
+        else if (id == 'Person') {
+            if (profielen.classList.contains("GebruikerMenuItem")) {
+                profielen.classList.remove("GebruikerMenuItem");
+                profielen.classList.add("GebruikerMenuItemactive");
+            }
+            if (items.classList.contains("GebruikerMenuItemactive")) {
+                items.classList.remove("GebruikerMenuItemactive");
+                items.classList.add("GebruikerMenuItem");
+            }
+            if (tutorials.classList.contains("GebruikerMenuItemactive")) {
+                tutorials.classList.remove("GebruikerMenuItemactive");
+                tutorials.classList.add("GebruikerMenuItem");
+                }
+        }
+    };
+
+    window.onload = function () {
+        toggleActive('Item');
+    }
+</script>
+
+
+<div id="reportDiv" class="row justify-content-center pt-3" >
+    <div class="col-lg-2 col-md-2 my-5">
+        <ul class="nav nav-pills flex-column GebruikerMenu">
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link GebruikerMenuItem" id="adminRights" asp-controller="Admin" asp-action="AdminRights">Admins beheren</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link GebruikerMenuItemactive" id="adminReports" asp-controller="Admin" asp-action="AdminReport">Report</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminFeedback" asp-controller="Admin" asp-action="AdminFeedback">Feedback</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminItems" asp-controller="Admin" asp-action="AdminItems">Items</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminTutorials" asp-controller="Admin" asp-action="AdminTutorials">Tutorials</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminProfielen" asp-controller="Admin" asp-action="AdminProfiles">Profielen</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-lg-1 col-md-1"></div>
+
+    <div class="col-lg-6 col-md-6 p-3">
+        <div class="d-flex justify-content-center mb-3">
+            <div class="row GebruikerMenu">
+                <div id="items" class="nav-link GebruikerMenuItemactive" onclick="toggleActive('Item')" style="cursor:pointer;">
+                    Items
+                </div>
+                <div id="tutorials" class="nav-link GebruikerMenuItem" onclick="toggleActive('Tutorial')" style="cursor:pointer;">
+                    Tutorials
+                </div>
+                <div id="profielen" class="nav-link GebruikerMenuItem" onclick="toggleActive('Person')" style="cursor:pointer;">
+                    Profielen
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:70%">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th style="width:30%">
+                        @Html.DisplayNameFor(model => model.Count)
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="conversations">
+                @foreach (AdminReport adminReport in Model)
+                {         
+                    <tr style="display: none;" class="@adminReport.Kind" name="reportedItems" onclick="openConversation('@adminReport.Reports.First().Kind','@adminReport.Reports.First().ReportId')">
+                        <td>
+                            @Html.DisplayFor(x => adminReport.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => adminReport.Count)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-1"></div>
+</div>

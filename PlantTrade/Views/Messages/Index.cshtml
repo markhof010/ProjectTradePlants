@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@model IEnumerable<PlantTrade.Models.Message>
+
+@{
+    ViewData["Title"] = "Gesprek";
+    Dictionary<string, string> conversation = ViewData["Conversation"] as Dictionary<string, string>;
+}
+
+<div class="container half-width">
+    <div class="messenger init full-screen">
+        <div class="msg-header">
+            <div class="msg-reciever">
+                <img class="msg-profile-pic" src="~/img/Icon.png" />
+                <div class="msg-profile-details">
+                    <h3 class="reciever-name"></h3>
+                    <p>Gebruiker</p>
+                </div>
+            </div>
+        </div>
+        <div class="msg-body">
+
+        </div>
+        <div class="msg-footer">
+            <textarea maxlength="200" rows="1" placeholder="Schrijf een bericht..." class="msg-chatbox"></textarea>
+            <img class="msg-send" src="~/img/send_arrow.png" />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="feedback-div">
+        <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Berichten pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+    </div>
+</div>

@@ -1,0 +1,113 @@
+﻿@model IEnumerable<PlantTrade.Models.User>
+
+@{
+    ViewData["Title"] = "Admin Profielen";
+}
+
+<script>
+
+    function openConversation(id) {
+        window.location.href = "/Admin/AdminProfileDetails/" + id;
+    };
+
+    function search() {
+        var value = document.getElementById("searchProfile").value.toLowerCase();
+        var elements = document.getElementsByName("user");
+        for (var i = 0; i < elements.length; i++) {
+            var name = elements[i].classList[0];
+            if (name.toString().toLowerCase().includes(value)) {
+                elements[i].removeAttribute("style");
+            }
+            else {
+                elements[i].style.display = "none"
+            }
+        }
+    };
+</script>
+
+
+<div id="reportDiv" class="row justify-content-center pt-3">
+    <div class="col-lg-2 col-md-2 my-5">
+        <ul class="nav nav-pills flex-column GebruikerMenu">
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link GebruikerMenuItem" id="adminRights" asp-controller="Admin" asp-action="AdminRights">Admins beheren</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminReports" asp-controller="Admin" asp-action="AdminReport">Report</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminFeedback" asp-controller="Admin" asp-action="AdminFeedback">Feedback</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminItems" asp-controller="Admin" asp-action="AdminItems">Items</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminTutorials" asp-controller="Admin" asp-action="AdminTutorials">Tutorials</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link GebruikerMenuItemactive" id="adminProfielen" asp-controller="Admin" asp-action="AdminProfiles">Profielen</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-lg-1 col-md-1"></div>
+
+    <div class="col-lg-6 col-md-6 p-3">
+        <font class="d-flex justify-content-center" size="+1">Zoek op gebruikersnaam </font>
+        <div class="d-flex justify-content-center pb-5">
+            <input id="searchProfile" type="text" oninput="search()" />
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:25%">
+                        Gebruikersnaam
+                    </th>
+                    <th style="width:30%">
+                        Specialisme
+                    </th>
+                    <th style="width:45%">
+                        Over gebruiker
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="conversations">
+                @foreach (User user in Model)
+                {
+                    <tr name="user" class="@user.UserName" onclick="openConversation('@user.Id')">
+                        <td>
+                            @Html.DisplayFor(m => user.UserName)
+                        </td>
+                        @if (user.Specialisme != null)
+                        {
+                            <td>
+                                @Html.DisplayFor(m => user.Specialisme)
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                Geen gegeven
+                            </td>
+                        }
+                        @if (user.About != null)
+                        {
+                            <td>
+                                @Html.DisplayFor(m => user.About)
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                Geen gegeven
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-1"></div>
+</div>

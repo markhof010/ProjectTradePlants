@@ -1,0 +1,67 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@model IEnumerable<PlantTrade.Models.Conversation>
+
+@{
+    ViewData["Title"] = "Gesprekken";
+}
+
+<h1 class="text-center display-4 pb-2">Uw gesprekken</h1>
+<div class="row pt-3">
+    <div class="col-lg-2 col-md-2"></div>
+    <div class="col-lg-8 col-md-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Item
+                    </th>
+                    <th>
+                        Aanbieder
+                    </th>
+                    <th>
+                        Geintresseerde
+                    </th>
+                    <th>
+                        Acties
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="conversations">
+                @foreach (Conversation conversation in Model)
+                {
+                <tr onclick="openConversation(@conversation.Id)">
+                    <td>
+                        @Html.DisplayFor(x => conversation.Item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => conversation.Trader.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => conversation.User.UserName)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@conversation.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@conversation.Id">Verwijderen</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-2 col-md-2"></div>
+</div>
+<script>
+    function openConversation(id) {
+        window.location.href = "/Messages/Index/" + id;
+    }
+</script>
+
+<div class="row">
+    <div class="feedback-div">
+        <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Mijn-gesprekken pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+    </div>
+</div>

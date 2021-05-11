@@ -1,0 +1,26 @@
+﻿@model PlantTrade.Models.Report
+
+@{
+    ViewData["Title"] = "Eerder Gerapporteerd";
+}
+
+<h1 class="display-4 text-center pt-2 pb-3">Al eerder gereport</h1>
+
+@if (Model.Kind == "Item")
+{
+    <div class="text-center">
+        <font size="+1">U heeft dit item al eerder gereport. Je mag een item maar 1x reporten.</font>
+    </div>
+}
+else if (Model.Kind == "Tutorial")
+{
+    <div class="text-center">
+        <font size="+1">U heeft deze tutorial al eerder gereport. Je mag een tutorial maar 1x reporten.</font>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <font size="+1">U heeft dit profiel al eerder gereport. Je mag een profiel maar 1x reporten.</font>
+    </div>
+}

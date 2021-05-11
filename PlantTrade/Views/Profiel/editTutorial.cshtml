@@ -1,0 +1,67 @@
+﻿@model PlantTrade.Models.Tutorial
+
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = "Tutorial wijzigen";
+}
+
+<script>
+    function checkEmpty() {
+        var titleEmpty = document.getElementById("TitleInput").value.length == 0;
+        var linkEmpty = document.getElementById("LinkInput").value.length == 0;
+        var link = document.getElementById("LinkInput").value
+
+        if (titleEmpty || linkEmpty) {
+            document.getElementById("inputSubmit").setAttribute('disabled', 'disabled');
+            document.getElementById("checkText").style.display = "block";
+        }
+        else {
+            if (link.includes("youtube") && link.includes("watch")) {
+                document.getElementById("inputSubmit").removeAttribute("disabled");
+                document.getElementById("checkText").style.display = "none";
+            }
+            else {
+                document.getElementById("inputSubmit").setAttribute('disabled', 'disabled');
+                document.getElementById("checkText").style.display = "block";
+            }
+        }
+    }
+</script>
+
+<h1 class="display-4 text-center">Tutorial aanpassen</h1>
+
+<hr />
+
+<form asp-action="editTut" enctype="multipart/form-data" class="pt-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Available" />
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label">Titel *</label>
+                <input id="TitleInput" asp-for="Title" class="form-control" oninput="checkEmpty()" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Link" class="control-label">Link <small>(dit moet een youtube link zijn)</small> *</label>
+                <input id="LinkInput" asp-for="Link" class="form-control" oninput="checkEmpty()" />
+                <span asp-validation-for="Link" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <input id="inputSubmit" type="submit" value="Opslaan" class="btn btn-primary" />
+            </div>
+        </div>
+        </div>
+</form>
+<div class="row">
+    <div class="feedback-div">
+        <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="wijzig-Tutorial pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+    </div>
+</div>

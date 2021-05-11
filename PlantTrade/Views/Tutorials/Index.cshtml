@@ -1,0 +1,59 @@
+﻿@model IEnumerable<PlantTrade.Models.Tutorial>
+
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = "Tutorials";
+}
+<div class="justify-content-center">
+    <h1 class="display-4 text-center">Tutorials</h1>
+
+    <div class="row pt-4">
+        <div class="col-lg-2 col-md-2"></div>
+        <div class="col-md-8 col-lg-8 col-sm-12">
+
+            <div class="row">
+                @foreach (var tutorial in Model)
+                {
+                    @if (tutorial.Available != 0)
+                    {
+
+                        <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
+                            <iframe style="width:100%; height:250px" src="@Html.DisplayFor(Tutorial => tutorial.Link)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-12 my-auto">
+                            <div class="">
+                                <font size="+2">
+                                    @Html.DisplayFor(modelItem => tutorial.Title)
+                                </font><br />
+                                <a style="font-size:90%;" class="btn btn-primary mb-1 mt-2" asp-controller="Items" asp-action="UserInformation" asp-route-id="@tutorial.UserId">Gebruiker: @Html.DisplayFor(model => tutorial.User.UserName)</a>
+                            </div>
+                        </div>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <div class="text-right">
+                                <a class="btn btn-primary-report mb-2" asp-controller="Report" asp-action="ReportPage" asp-route-kind="Tutorial" asp-route-reportId="@tutorial.Id">Report</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-right">
+                                <a class="btn btn-primary-report-disabled mb-2" href="">Report</a>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+
+        </div>
+        <div class="col-lg-2 col-md-2"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="feedback-div">
+        <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Tutorial pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+    </div>
+</div>

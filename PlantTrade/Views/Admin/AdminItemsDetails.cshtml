@@ -1,0 +1,109 @@
+﻿@model PlantTrade.Models.Item
+
+@{
+    ViewData["Title"] = "Admin Item Details";
+}
+<div class="container">
+    <div class="row mijn-item mt-4 p-3">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <img src=@Html.DisplayFor(model => model.Picture) class="mijn-item-image mt-5 mb-1" />
+            <strong>Omschrijving</strong>
+            <p> @Html.DisplayFor(model => model.Description)</p>
+        </div>
+        <div class="col-lg-1 col-md-1"></div>
+        <div class="col-lg-5 col-md-5 col-sm-12 my-auto">
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        Aanbod
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Offer)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Soort
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Kind)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Plant naam
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Latijnse naam
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @if (Model.LatinName != null)
+                        {
+                            @Html.DisplayFor(model => model.LatinName);
+                        }
+                        else
+                        {
+                            <div>Niet Gegeven</div>
+                        }
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Zon uren
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.SunHours)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Water
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Water)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Bodem
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Ground)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Deze item
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.TransactionKind)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-12 text-right"></div>
+    </div>
+</div>
+
+<div class="mb-3">
+
+    <div id="ReportItemButtons" class="text-center mt-5">
+        <a class="btn btn-primary mr-1" onclick="confirmDel()" style="color: white; cursor: pointer;">Item verwijderen</a>
+    </div>
+
+    <div id="ItemDelConfirm" style="display: none;" class="text-center mt-5">
+        <h4>Weet je zeker dat je dit item wil verwijderen?</h4>
+        <br />
+        @using (Html.BeginForm(new { controller = "Admin", action = "deleteItem" }))
+        {
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="page" value="AdminItems" />
+            <input id="submitAdmin" type="submit" value="Bevestigen" class="btn btn-primary" />
+            <a class="btn btn-primary mr-1" onclick="confirmDel()" style="color: white; cursor: pointer;">Annuleren</a>
+        }
+    </div>
+</div>
+
+<script>
+    function confirmDel() {
+        if (document.getElementById("ItemDelConfirm").style.display == "block") {
+            document.getElementById("ItemDelConfirm").style.display = "none";
+            document.getElementById("ReportItemButtons").style.display = "block";
+        }
+        else {
+            document.getElementById("ReportItemButtons").style.display = "none";
+            document.getElementById("ItemDelConfirm").style.display = "block";
+        }
+    }
+</script>

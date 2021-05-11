@@ -1,0 +1,121 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@model PlantTrade.Models.Item
+
+@{
+    ViewData["Title"] = "Mijn Item Details";
+}
+
+
+<script>
+    function confirmDel() {
+        if (document.getElementById("ItemDelConfirm").style.display == "block") {
+            document.getElementById("ItemDelConfirm").style.display = "none";
+            document.getElementById("ItemButtons").style.display = "block";
+        }
+        else {
+            document.getElementById("ItemButtons").style.display = "none";
+            document.getElementById("ItemDelConfirm").style.display = "block";
+        }
+    }
+</script>
+<div class="container">
+    <div class="row mijn-item mt-4 p-3">
+
+        <div class="col-sm-4">
+            <img src=@Html.DisplayFor(model => model.Picture) class="mijn-item-image mb-1" />
+            <strong>Omschrijving</strong>
+            <p> @Html.DisplayFor(model => model.Description)</p>
+        </div>
+
+        <div class="col-sm-7 ml-auto my-auto">
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        Aanbod
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Offer)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Soort
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Kind)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Plant naam
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Latijnse naam
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @if (Html.ViewData.Model.LatinName != null)
+                        {
+                            @Html.DisplayFor(model => model.LatinName);
+                        }
+                        else
+                        {
+                            <div>Niet Gegeven</div>
+                        }
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Zon uren
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.SunHours)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Water
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Water)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Bodem
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Ground)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Deze item
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.TransactionKind)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="ItemButtons" class="text-center mt-5">
+        <a class="btn btn-primary mr-1" asp-action="editItem" asp-route-id="@Model.Id">Wijzigen</a>
+        <a class="btn btn-primary mr-1" onclick="confirmDel()" style="color: white; cursor: pointer;">Verwijderen</a>
+        <a class="btn btn-primary" asp-action="mijnItems">Mijn Item lijst</a>
+    </div>
+
+
+    <div id="ItemDelConfirm" style="display: none;" class="text-center mt-5">
+        <h4>Weet je zeker dat je dit item wil verwijderen?</h4>
+        <br />
+        <form asp-action="deleteItem">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Bevestigen" class="btn btn-primary" />
+            <a class="btn btn-primary mr-1" onclick="confirmDel()" style="color: white; cursor: pointer;">Annuleren</a>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="feedback-div">
+        <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Mijn-item pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+    </div>
+</div>

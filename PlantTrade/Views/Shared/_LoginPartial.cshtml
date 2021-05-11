@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using PlantTrade.Services
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject GetRole rollen
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link text-dark dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-controller="Profiel" asp-action="Index" title="Manage">@UserManager.GetUserName(User)</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="nav-link text-dark dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Mijn gegevens</a>
+                <a class="nav-link text-dark dropdown-item" asp-controller="Profiel" asp-action="mijnItems">Mijn Items</a>
+                <a class="nav-link text-dark dropdown-item" asp-controller="Profiel" asp-action="mijnTutorials">Mijn Tutorials</a>
+                <a class="nav-link text-dark dropdown-item" asp-controller="Conversations" asp-action="Index">Mijn Gesprekken</a>
+                @if (rollen.role(UserManager.GetUserId(User)))
+                {
+                    <a class="nav-link text-dark dropdown-item" asp-controller="Admin" asp-action="AdminRights">Administrator</a>
+                }
+            </div>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Uitloggen</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Registreren</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Inloggen</a>
+        </li>
+    }
+</ul>

@@ -1,0 +1,82 @@
+﻿@model PlantTrade.Models.Conversation
+
+@{
+    ViewData["Title"] = "Gesprek Details";
+}
+
+<div class="container">
+    <div class="row mijn-item mt-4 p-3">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <p>Aanbieder: @Model.Trader.UserName</p>
+            <img src=@Html.DisplayFor(model => model.Item.Picture) class="mijn-item-image mb-1" />
+            <strong>Omschrijving</strong>
+            <p> @Html.DisplayFor(model => model.Item.Description)</p>
+        </div>
+        <div class="col-lg-1 col-md-1"></div>
+        <div class="col-lg-5 col-md-5 col-sm-12 my-auto">
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        Aanbod
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Item.Offer)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Soort
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Item.Kind)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Plant naam
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.Item.Name)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Latijnse naam
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @if (Html.ViewData.Model.Item.LatinName == "")
+                        {
+                            Html.DisplayFor(model => model.Item.LatinName);
+                        }
+                        else
+                        {
+                            <div>Niet Gegeven</div>
+                        }
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Zon uren
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.Item.SunHours)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Water
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Item.Water)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Bodem
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Item.Ground)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Deze item
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.Item.TransactionKind)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-12 text-right"></div>
+    </div>
+</div>
+<div class="text-center">
+    <a class="btn btn-primary mt-2" asp-action="Index">Terug naar gesprekken</a>
+</div>

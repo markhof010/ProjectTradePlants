@@ -1,0 +1,70 @@
+﻿@model IEnumerable<PlantTrade.Models.Item>
+
+@{
+    ViewData["Title"] = "Admin Items";
+}
+<div class="row justify-content-center pt-3">
+    <div class="col-md-2 my-5">
+        <ul class="nav nav-pills flex-column GebruikerMenu">
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminRights" asp-controller="Admin" asp-action="AdminRights">Admins beheren</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminReports" asp-controller="Admin" asp-action="AdminReport">Report</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminFeedback" asp-controller="Admin" asp-action="AdminFeedback">Feedback</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link GebruikerMenuItemactive" id="adminItems" asp-controller="Admin" asp-action="AdminItems">Items</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminTutorials" asp-controller="Admin" asp-action="AdminTutorials">Tutorials</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminProfielen" asp-controller="Admin" asp-action="AdminProfiles">Profielen</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-lg-1 col-md-1"></div>
+
+    <div class="col-lg-7 col-md-7 p-3">
+
+        <font class="d-flex justify-content-center" size="+1">Zoek op naam </font>
+        <div class="d-flex justify-content-center pb-5">
+            <input id="searchItem" type="text" oninput="search()" />
+        </div>
+
+        <div class="home-content">
+            <div class="cards row">
+                @foreach (Item item in Model)
+                {
+                    <div name="item" class="card col-sm-12 col-md-5 col-lg-3 @item.Name">
+                        <img src=@Html.DisplayFor(modelItem => item.Picture) class="card-img-top" alt="Item" />
+                        <div class="card-body">
+                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                            <p class="card-text">@Html.DisplayFor(modelItem => item.Kind)</p>
+                            <a asp-controller="Admin" asp-action="AdminItemsDetails" asp-route-id="@item.Id" class="btn btn-primary">Zie meer</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function search() {
+        var value = document.getElementById("searchItem").value.toLowerCase();
+        var elements = document.getElementsByName("item");
+        for (var i = 0; i < elements.length; i++) {
+            var name = elements[i].classList[4];
+            if (name.toString().toLowerCase().includes(value)) {
+                elements[i].removeAttribute("style");
+            }
+            else {
+                elements[i].style.display = "none"
+            }
+        }
+    }
+</script>

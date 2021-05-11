@@ -1,0 +1,51 @@
+﻿.GebruikerMenu {
+    background-color: #6AB547;
+}
+
+.GebruikerMenuItem, .GebruikerMenuItem a {
+    color: #F3F9E3;
+}
+
+.GebruikerMenuItem a:hover, .GebruikerMenuItemactive {
+    background-color: #4A9537;
+    color: #fff;
+}
+
+.ItemUser {
+    width: 100%;
+    display: inline-flex;
+}
+
+.ItemUserGegevens {
+    width: 100%;
+    display: inline-flex;
+    background-color: #F3F9E3
+}
+
+.GegevensGebruiker {
+    background-color: #F3F9E3;
+}
+
+.btn.btnfiltr {
+    color: #fff;
+    background-color: #6AB547;
+    font-size: 20px;
+}
+
+div.btn.btnfiltr:hover {
+    background-color: #4A9537;
+    color:#000000
+}
+
+div.btn.btnfiltr:active {
+    border-color: #4A9537;
+}
+
+.sliderfltr-md {
+    border-radius:10px;
+    width: 90% !important;
+}
+
+.checksfltr-md {
+    font-size: 20px;
+}

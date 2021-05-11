@@ -1,0 +1,94 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@model PlantTrade.Models.User
+
+@{
+    ViewData["Title"] = "Gebruiker Gegevens";
+}
+
+<div class="container">
+    <div class="row ItemUserGegevens mt-md-5 justify-content-center">
+        <div class="col-md-2 my-5">
+            <ul class="nav nav-pills flex-column GebruikerMenu">
+                <li class="nav-item GebruikerMenuItem">
+                    <a class="nav-link GebruikerMenuItemactive" id="profile" asp-controller="Items" asp-action="UserInformation">Profiel</a>
+                </li>
+                <li class="nav-item GebruikerMenuItem">
+                    <a class="nav-link" id="Producten" asp-controller="Items" asp-action="UserItems" asp-route-id="@ViewBag.userId">Items</a>
+                </li>
+                <li class="nav-item GebruikerMenuItem">
+                    <a class="nav-link" id="tutorials" asp-controller="Items" asp-action="UserTutorials" asp-route-id="@ViewBag.userId">Tutorials</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-sm-1"></div>
+        <div class="col-sm-6 my-auto p-3 GegevensGebruiker">
+            <div>
+                <dl class="row">
+
+                    <dt class="col-sm-4 mt-1">
+                        Gebruikersnaam
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.UserName)
+                    </dd>
+
+                    <dt class="col-sm-4 mt-1">
+                        Specialisme
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @if (Html.ViewData.Model.Specialisme != null)
+                        {
+                            <div>@Html.DisplayFor(model => model.Specialisme) </div>
+                        }
+                        else
+                        {
+                            <div>Geen gegeven</div>
+                        }
+                    </dd>
+
+
+                    <dt class="col-sm-4 mt-1">
+                        Over gebruiker
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @if (Html.ViewData.Model.About != null)
+                        {
+                            <div>@Html.DisplayFor(model => model.About) </div>
+                        }
+                        else
+                        {
+                            <div>Geen gegeven</div>
+                        }
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-sm-3 text-right mt-2">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <a class="btn btn-primary-report mb-2" asp-controller="Report" asp-action="ReportPage" asp-route-kind="Person" asp-route-reportId="@Model.Id">Report</a>
+            }
+            else
+            {
+                <a class="btn btn-primary-report-disabled mb-2" href="">Report</a>
+            }
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="feedback-div">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Gebruiker-gegevens pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+        }
+        else
+        {
+            <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Gebruiker-gegevens pagina pagina">Feedback</a>
+        }
+    </div>
+</div>

@@ -1,0 +1,169 @@
+﻿@model PlantTrade.Models.AdminReport
+
+@{
+    ViewData["Title"] = "Admin gerapporteerd Item";
+}
+<div class="container">
+    <div class="row mijn-item mt-4 p-3">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <img src=@Html.DisplayFor(model => model.Item.Picture) class="mijn-item-image mt-5 mb-1" />
+            <strong>Omschrijving</strong>
+            <p> @Html.DisplayFor(model => model.Item.Description)</p>
+        </div>
+        <div class="col-lg-1 col-md-1"></div>
+        <div class="col-lg-5 col-md-5 col-sm-12 my-auto">
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        Aanbod
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Item.Offer)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Soort
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Item.Kind)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Plant naam
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.Item.Name)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Latijnse naam
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @if (Html.ViewData.Model.Item.LatinName != null)
+                        {
+                            @Html.DisplayFor(model => model.Item.LatinName);
+                        }
+                        else
+                        {
+                            <div>Niet Gegeven</div>
+                        }
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Zon uren
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.Item.SunHours)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Water
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Item.Water)
+                    </dd>
+                    <dt class="col-sm-4">
+                        Bodem
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Item.Ground)
+                    </dd>
+                    <dt class="col-sm-4 mt-1">
+                        Deze item
+                    </dt>
+                    <dd class="col-sm-8 mt-1">
+                        @Html.DisplayFor(model => model.Item.TransactionKind)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-12 text-right"></div>
+    </div>
+</div>
+<h1 class="display-4 text-center mt-3">Reports</h1>
+<div class="row mt-3">
+    <div class="col-lg-2 col-md-2"></div>
+    <div class="col-lg-8 col-md-8 col-sm-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Gebruikersnaam
+                    </th>
+                    <th>
+                        Omschrijving
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Report report in Model.Reports)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => report.User.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => report.Description)
+                    </td>
+                    <td>
+                        <a asp-action="DeleteReport" asp-route-id="@report.Id">Verwijderen</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="mb-3">
+    <div id="ReportItemButtons" class="text-center mt-5">
+        @if (Model.Item.Available != 1)
+        {
+            <a class="btn btn-primary mr-1" onclick="confirmRes()" style="color: white; cursor: pointer;">Item herstellen</a>
+        }
+        <a class="btn btn-primary mr-1" onclick="confirmDel()" style="color: white; cursor: pointer;">Item verwijderen</a>
+    </div>
+
+
+    <div id="ItemDelConfirm" style="display: none;" class="text-center mt-5">
+        <h4>Weet je zeker dat je dit item wil verwijderen?</h4>
+        <br />
+        @using (Html.BeginForm(new { controller = "Admin", action = "deleteItem" }))
+        {
+            <input type="hidden" name="id" value="@Model.Item.Id" />
+            <input type="hidden" name="id" value="ReportItems" />
+            <input id="submitAdmin" type="submit" value="Bevestigen" class="btn btn-primary" />
+            <a class="btn btn-primary mr-1" onclick="confirmDel()" style="color: white; cursor: pointer;">Annuleren</a>
+        }
+    </div>
+
+    <div id="ItemResConfirm" style="display: none;" class="text-center mt-5">
+        <h4>Weet je zeker dat je dit item wil Herstellen?</h4>
+        Alle reports worden verwijderd
+        <br /><br />
+        @using (Html.BeginForm(new { controller = "Admin", action = "restoreReportedItem" }))
+        {
+            <input type="hidden" name="id" value="@Model.Item.Id" />
+            <input id="submitAdmin" type="submit" value="Bevestigen" class="btn btn-primary" />
+            <a class="btn btn-primary mr-1" onclick="confirmRes()" style="color: white; cursor: pointer;">Annuleren</a>
+        }
+    </div>
+</div>
+
+<script>
+    function confirmDel() {
+        if (document.getElementById("ItemDelConfirm").style.display == "block") {
+            document.getElementById("ItemDelConfirm").style.display = "none";
+            document.getElementById("ReportItemButtons").style.display = "block";
+        }
+        else {
+            document.getElementById("ReportItemButtons").style.display = "none";
+            document.getElementById("ItemDelConfirm").style.display = "block";
+        }
+    }
+    function confirmRes() {
+        if (document.getElementById("ItemResConfirm").style.display == "block") {
+            document.getElementById("ItemResConfirm").style.display = "none";
+            document.getElementById("ReportItemButtons").style.display = "block";
+        }
+        else {
+            document.getElementById("ReportItemButtons").style.display = "none";
+            document.getElementById("ItemResConfirm").style.display = "block";
+        }
+    }
+</script>

@@ -1,0 +1,50 @@
+﻿@model PlantTrade.Models.Conversation
+
+@{
+    ViewData["Title"] = "Gesprek Verwijderen";
+}
+
+<h3 class="text-center py-3">Weet je zeker dat je dit gesprek wil verwijderen</h3>
+<div>
+    <div class="row">
+        <div class="col-lg-2 col-md-2"></div>
+        <table class="table col-lg-8 col-md-8 text-center">
+            <thead>
+                <tr>
+                    <th>
+                        Item
+                    </th>
+                    <th>
+                        Aanbieder
+                    </th>
+                    <th>
+                        Geinteresseerde
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>
+                        @Model.Item.Name
+                    </td>
+                    <td>
+                        @Model.Trader.UserName
+                    </td>
+                    <td>
+                        @Model.User.UserName
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="col-lg-2 col-md-2"></div>
+    </div>
+    <div class="text-center pt-5">
+        @using (Html.BeginForm(new { controller = "Conversations", action = "DeleteConfirmed" }))
+        {
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="submit" value="Verwijderen" class="btn btn-primary" />
+            <a class="btn btn-primary mr-1" asp-action="Index">Terug naar gesprekken</a>
+        }
+    </div>
+</div>

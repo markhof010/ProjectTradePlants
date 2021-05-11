@@ -1,0 +1,108 @@
+﻿@model PlantTrade.Models.AdminReport
+
+@{
+    ViewData["Title"] = "Admin gerapporteerde Tutorial";
+}
+
+<div class="row pt-5">
+    <div class="col-lg-2 col-md-2"></div>
+    <div class="col-md-8 col-lg-8 col-sm-12">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
+                <iframe style="width:100%; height:250px" src="@Html.DisplayFor(m => m.Tutorial.Link)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-12 my-auto">
+                <div class="">
+                    <font size="+2">
+                        @Html.DisplayFor(m => m.Tutorial.Title)
+                    </font>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-2"></div>
+</div>
+
+<h1 class="display-4 text-center mt-3">Reports</h1>
+<div class="row mt-3">
+    <div class="col-lg-2 col-md-2"></div>
+    <div class="col-lg-8 col-md-8 col-sm-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Gebruikersnaam
+                    </th>
+                    <th>
+                        Omschrijving
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Report report in Model.Reports)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => report.User.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => report.Description)
+                        </td>
+                        <td>
+                            <a asp-action="DeleteReport" asp-route-id="@report.Id">Verwijderen</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mb-3">
+    <div id="ReportTutorialButtons" class="text-center mt-5">
+        @if (Model.Tutorial.Available != 1)
+        {
+            <a class="btn btn-primary mr-1" onclick="confirmDiv('ResConfirm')" style="color: white; cursor: pointer;">Tutorial herstellen</a>
+        }
+        <a class="btn btn-primary mr-1" onclick="confirmDiv('DelConfirm')" style="color: white; cursor: pointer;">Tutorial verwijderen</a>
+    </div>
+
+
+    <div id="DelConfirm" style="display: none;" class="text-center mt-5">
+        <h4>Weet je zeker dat je dit item wil verwijderen?</h4>
+        <br />
+        @using (Html.BeginForm(new { controller = "Admin", action = "deleteTutorial" }))
+        {
+            <input type="hidden" name="id" value="@Model.Tutorial.Id" />
+            <input type="hidden" name="page" value="AdminReportedTutorialDetails" />
+            <input id="submitAdmin" type="submit" value="Bevestigen" class="btn btn-primary" />
+            <a class="btn btn-primary mr-1" onclick="confirmDiv('DelConfirm')" style="color: white; cursor: pointer;">Annuleren</a>
+        }
+    </div>
+
+    <div id="ResConfirm" style="display: none;" class="text-center mt-5">
+        <h4>Weet je zeker dat je dit item wil Herstellen?</h4>
+        Alle reports worden verwijderd
+        <br /><br />
+        @using (Html.BeginForm(new { controller = "Admin", action = "restoreReportedTutorial" }))
+        {
+            <input type="hidden" name="id" value="@Model.Tutorial.Id" />
+            <input id="submitAdmin" type="submit" value="Bevestigen" class="btn btn-primary" />
+            <a class="btn btn-primary mr-1" onclick="confirmDiv('ResConfirm')" style="color: white; cursor: pointer;">Annuleren</a>
+        }
+    </div>
+</div>
+
+<script>
+    function confirmDiv(kind) {
+        if (document.getElementById(kind).style.display == "block") {
+            document.getElementById(kind).style.display = "none";
+            document.getElementById("ReportTutorialButtons").style.display = "block";
+        }
+        else {
+            document.getElementById("ReportTutorialButtons").style.display = "none";
+            document.getElementById(kind).style.display = "block";
+        }
+    }
+</script>

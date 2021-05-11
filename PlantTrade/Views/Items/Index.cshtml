@@ -1,0 +1,386 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@model IEnumerable<PlantTrade.Models.Item>
+
+@{
+    ViewData["Title"] = "Ruilen";
+}
+
+<div class="row justify-content-end pt-1 pb-1">
+    <button class="btn btn-primary mr-1" type="button" onclick="ChangePageLength(4)">All</button>
+    <button class="btn btn-primary mr-1" type="button" onclick="ChangePageLength(8)">8</button>
+    <button class="btn btn-primary mr-1" type="button" onclick="ChangePageLength(16)">16</button>
+    <button class="btn btn-primary" type="button" onclick="ChangePageLength(24)">24</button>
+</div>
+
+<div class="home-content row">
+    <div class="col-md-2">
+        <div>
+
+            <input class="form-control" id="Searchbar" name="Searchbar" type="text" placeholder="Zoek op naam" oninput="Search()" autocomplete="off"  /><br />
+
+            <div class="btn btnfiltr" id="btnAanbod" onclick="changeview('Aanbod',this)">Aanbod &#9660</div><br /><br />
+
+            <div id="Aanbod" style="display:none;">
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Zaad" value="Aanbod" onchange="filterSelection('Zaad')">
+                    <label class="checksfltr-md" for="Zaad">Zaad</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Bol" value="Aanbod" onchange="filterSelection('Bol')">
+                    <label class="checksfltr-md" for="Bol">Bol</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Stek" value="Aanbod" onchange="filterSelection('Stek')">
+                    <label class="checksfltr-md" for="Stek">Stek</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Zaailing" value="Aanbod" onchange="filterSelection('Zaailing')">
+                    <label class="checksfltr-md" for="Zaailing">Zaailing</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Volgroeid" value="Aanbod" onchange="filterSelection('Volgroeid')">
+                    <label class="checksfltr-md" for="Volgroeid">Volgroeid</label>
+                </div>
+            </div>
+
+            <div class="btn btnfiltr" id="btnSoort" onclick="changeview('Soort',this)">Soort &#9660</div><br /><br />
+
+            <div id="Soort" style="display:none;">
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Boom" value="Soort" onchange="filterSelection('Boom')">
+                    <label class="checksfltr-md" for="Boom">Boom</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Bloem" value="Soort" onchange="filterSelection('Bloem')">
+                    <label class="checksfltr-md" for="Bloem">Bloem</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Struik" value="Soort" onchange="filterSelection('Struik')">
+                    <label class="checksfltr-md" for="Struik">Struik</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Kruidachtige" value="Soort" onchange="filterSelection('Kruidachtige')">
+                    <label class="checksfltr-md" for="Kruidachtige">Kruidachtige</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Bodembedekker" value="Soort" onchange="filterSelection('Bodembedekker')">
+                    <label class="checksfltr-md" for="Bodembedekker">Bodembedekker</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Klimplant" value="Soort" onchange="filterSelection('Klimplant')">
+                    <label class="checksfltr-md" for="Klimplant">Klimplant</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Waterplant" value="Soort" onchange="filterSelection('Waterplant')">
+                    <label class="checksfltr-md" for="Waterplant">Waterplant</label>
+                </div>
+            </div>
+
+            <div class="btn btnfiltr" id="btnVochtigheid" onclick="changeview('Vochtigheid',this)">Vochtigheid &#9660</div><br /><br />
+
+            <div id="Vochtigheid" style="display:none;">
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Nat" value="Vochtigheid" onchange="filterSelection('Nat')">
+                    <label class="checksfltr-md" for="Nat">Nat</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Gemiddeld" value="Vochtigheid" onchange="filterSelection('Gemiddeld')">
+                    <label class="checksfltr-md" for="Gemiddeld">Gemiddeld</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Droog" value="Vochtigheid" onchange="filterSelection('Droog')">
+                    <label class="checksfltr-md" for="Droog">Droog</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Geen" value="Vochtigheid" onchange="filterSelection('Geen')">
+                    <label class="checksfltr-md" for="Geen">Geen</label>
+                </div>
+            </div>
+
+            <div class="btn btnfiltr" id="btnBodem" onclick="changeview('Bodem',this)">Bodem &#9660</div><br /><br />
+
+            <div id="Bodem" style="display:none;">
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Kalkrijk" value="Bodem" onchange="filterSelection('Kalkrijk')">
+                    <label class="checksfltr-md" for="Kalkrijk">Kalkrijk</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Leem" value="Bodem" onchange="filterSelection('Leem')">
+                    <label class="checksfltr-md" for="Leem">Leem</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Zuur" value="Bodem" onchange="filterSelection('Zuur')">
+                    <label class="checksfltr-md" for="Zuur">Zuur</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Geen" value="Bodem" onchange="filterSelection('Geen')">
+                    <label class="checksfltr-md" for="Geen">Geen</label>
+                </div>
+            </div>
+
+            <div class="btn btnfiltr" id="btnTransactie" onclick="changeview('Transactie',this)">Transactie &#9660</div><br /><br />
+
+            <div id="Transactie" style="display:none;">
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Ruilen" value="Transactie" onchange="filterSelection('Ruilen')">
+                    <label class="checksfltr-md" for="Ruilen">Ruilen</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="Plantindex" id="Gratis" value="Transactie" onchange="filterSelection('Gratis')">
+                    <label class="checksfltr-md" for="Gratis">Gratis</label>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <output class="checksfltr-md" name="outputSunhours" id="outputSunhours" for="inputSunhours">0</output>
+                <label class="checksfltr-md">Zonuren</label><br />
+                <input class="sliderfltr-md" id="inputSunhours" type="range" name="Slider" value="0" min="0" max="12" oninput="Search()" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-10">
+        <div class="cards row mt-3">
+            @foreach (var item in Model)
+            {
+                <div class="card filter @item.Kind @item.Ground @item.Offer @item.TransactionKind @item.Water col-sm-12 col-md-6 col-lg-3">
+                    <img src=@Html.DisplayFor(modelItem => item.Picture) class="card-img-top" alt="Item" />
+                    <div class="card-body @item.Name @item.LatinName @item.SunHours">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Kind)</p>
+                        <a asp-action="ViewItem" asp-route-id="@item.Id" class="btn btn-primary">Zie meer</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="feedback-div">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Ruilen pagina" asp-route-userId="@UserManager.GetUserId(User)">Feedback</a>
+        }
+        else
+        {
+            <a class="btn btn-primary-feedback mb-2" asp-controller="Feedback" asp-action="Feedback" asp-route-page="Ruilen pagina">Feedback</a>
+        }
+    </div>
+</div>
+
+<script>
+    var listToView = [];
+    var listToSearch = [];
+    var listToSun = [];
+    var currentsearch = "";
+    var currentsunhours = 0;
+    var doc = document.getElementsByClassName("filter");
+    var pagelength = doc.length;
+    
+    filterSelection("8")
+
+    function changeview(kind, id) {
+
+        if (document.getElementById(kind).style.display == "block") {
+            document.getElementById(kind).style.display = "none";
+            id.style.backgroundColor = "#6AB547";
+            id.style.color = "#fff";
+        }
+        else {
+            document.getElementById(kind).style.display = "block";
+            id.style.backgroundColor = "#4A9537";
+            id.style.color = "#000000";
+        }
+    }
+
+    function Search() {
+        currentsearch = document.getElementById("Searchbar").value.toLowerCase();
+        currentsunhours = document.getElementById("inputSunhours").value.toLowerCase();
+        document.getElementById("outputSunhours").value = currentsunhours;
+        filterSelection("")
+    }
+
+    function GetCheckedBoxes() {
+        var checkboxes = document.getElementsByName("Plantindex");
+        var checkboxesChecked = [];
+        // loop over them all
+        for (var i = 0; i < checkboxes.length; i++) {
+            // And stick the checked ones onto an array...
+            if (checkboxes[i].checked) {
+                checkboxesChecked.push(checkboxes[i]);
+            }
+        }
+        return checkboxesChecked;
+    }
+
+    function GetSortCheckboxes(checked) {
+        var checkboxes = checked
+        var checkboxessoort = [];
+        // loop over them all
+        for (var i = 0; i < checkboxes.length; i++) {
+            // And stick the checked ones onto an array...
+            if (checkboxes[i].checked) {
+                checkboxessoort.push(checkboxes[i].value);
+            }
+        }
+        return checkboxessoort;
+    }
+
+    function ChangePageLength(length) {
+        if ((length == 24 && doc.length < 24) || (length == 16 && doc.length < 16) || (length == 8 && doc.length < 8)) {
+            pagelength = doc.length;
+        }
+        else if (length == 4) {
+            pagelength = doc.length + 1;
+        }
+        else {
+            pagelength = length;
+        }
+        view()
+    }
+
+    function filterSelection(filter) {
+        var indexer, totallength, currentfilters, currentsort;
+        listToView = [];
+        listToSearch = [];
+        listToSun = [];
+        totallength = doc.length;
+        currentfilters = [];
+        currentsort = [];
+        if (filter == 'all') {
+            filter = "";
+        }else if(filter == '4'){
+            ChangePageLength(4);
+        } else {
+            currentfilters = GetCheckedBoxes();
+            currentsort = GetSortCheckboxes(currentfilters);
+
+        }
+        for (indexer = 0; indexer < totallength; indexer++) {
+            var filterExistsInItem = false;
+            var classattributes = doc[indexer].className.split(" ");
+            var aanbod = true;
+            var soort = true;
+            var vochtigheid = true;
+            var bodem = true;
+            var transactie = true;
+            for (var i = 0; i < currentfilters.length; i++) {
+                if (currentfilters[i].value == "Aanbod") {
+                    aanbod = false;
+                }
+                else if (currentfilters[i].value == "Soort") {
+                    soort = false;
+                }
+                else if (currentfilters[i].value == "Vochtigheid") {
+                    vochtigheid = false;
+                }
+                else if (currentfilters[i].value == "Bodem") {
+                    bodem = false;
+                }
+                else if (currentfilters[i].value == "Transactie") {
+                    transactie = false;
+                }
+            }
+            for (var i = 0; i < currentfilters.length; i++) {
+                for (var k = 0; k < classattributes.length; k++) {
+                    if (currentfilters[i].id == classattributes[k] && currentfilters[i].value == "Aanbod" && aanbod == false) {
+                        aanbod = true;
+                    }
+                    else if (currentfilters[i].id == classattributes[k] && currentfilters[i].value == "Soort" && soort == false) {
+                        soort = true;
+                    }
+                    else if (currentfilters[i].id == classattributes[k] && currentfilters[i].value == "Vochtigheid" && vochtigheid == false) {
+                        vochtigheid = true;
+                    }
+                    else if (currentfilters[i].id == classattributes[k] && currentfilters[i].value == "Bodem" && bodem == false) {
+                        bodem = true;
+                    }
+                    else if (currentfilters[i].id == classattributes[k] && currentfilters[i].value == "Transactie" && transactie == false) {
+                        transactie = true;
+                    }
+                }
+
+            }
+            if (aanbod && soort && vochtigheid && bodem && transactie) {
+                filterExistsInItem = true;
+            }
+
+
+            if (filterExistsInItem || currentfilters.length == 0) {
+                listToView.push(doc[indexer])
+                var checks = doc[indexer].children[1].className;
+                var namesandsun = checks.replace("card-body ", "");
+                var names = namesandsun.toLowerCase();
+                listToSearch.push(names)
+                var rawnames = namesandsun.split(" ");
+                var rawsunhours = rawnames[rawnames.length - 1];
+                var sunhours = parseInt(rawsunhours);
+                listToSun.push(sunhours)
+            }
+        }
+        view()
+    }
+
+    function view() {
+        var keeptrack;
+        keeptrack = 0;
+        for (var i = 0; i < doc.length; i++) {
+            RemoveClass(doc[i], "show")
+        }
+        for (var i = 0; i < listToView.length; i++) {
+            var search = false;
+            if (currentsearch != "" && listToSearch[i].search(currentsearch) > -1) {
+                search = true;
+            }
+            else if (currentsearch == "") {
+                search = true;
+            }
+            for (var j = 0; j < doc.length; j++) {
+                if (doc[j] == listToView[i] && keeptrack < pagelength && listToSun[i] >= currentsunhours && search) {
+                    AddClass(doc[j], "show");
+                    keeptrack++;
+                }
+            }
+        }
+    }
+
+    function AddClass(element, name) {
+        var i, arr1, arr2;
+        arr1 = element.className.split(" ");
+        arr2 = name.split(" ");
+        for (i = 0; i < arr2.length; i++) {
+            if (arr1.indexOf(arr2[i]) == -1) {
+                element.className += " " + arr2[i];
+            }
+        }
+    }
+
+    function RemoveClass(element, name) {
+        var i, arr1, arr2;
+        arr1 = element.className.split(" ");
+        arr2 = name.split(" ");
+        for (i = 0; i < arr2.length; i++) {
+            while (arr1.indexOf(arr2[i]) > -1) {
+                arr1.splice(arr1.indexOf(arr2[i]), 1);
+            }
+        }
+        element.className = arr1.join(" ");
+    }
+</script>

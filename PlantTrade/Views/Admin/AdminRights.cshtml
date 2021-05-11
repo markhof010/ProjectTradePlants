@@ -1,0 +1,115 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@model IEnumerable<PlantTrade.Models.User>
+
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = "Admin Rechten";
+}
+
+
+<div class="row justify-content-center pt-3">
+    <div class="col-md-2 my-5">
+        <ul class="nav nav-pills flex-column GebruikerMenu">
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link GebruikerMenuItemactive" id="adminRights" asp-controller="Admin" asp-action="AdminRights">Admins beheren</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminReports" asp-controller="Admin" asp-action="AdminReport">Report</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminFeedback" asp-controller="Admin" asp-action="AdminFeedback">Feedback</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminItems" asp-controller="Admin" asp-action="AdminItems">Items</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminTutorials" asp-controller="Admin" asp-action="AdminTutorials">Tutorials</a>
+            </li>
+            <li class="nav-item GebruikerMenuItem">
+                <a class="nav-link" id="adminProfielen" asp-controller="Admin" asp-action="AdminProfiles">Profielen</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-lg-1 col-md-1"></div>
+
+    <div class="col-lg-6 col-md-6 p-3">
+        <div class="row mt-3">
+            <div class="col-lg-2 col-md-2"></div>
+            <div class="col-lg-8 col-md-8 col-sm-12 text-center">
+                <div class="mb-3">
+                    <font size="+2">Geef een account admin rechten</font>
+                </div>
+                <div class="mb-5">
+                    @using (Html.BeginForm(new { controller = "Admin", action = "AddAdminRights" }))
+                    {
+                        <input id="userEmail" type="text" name="email" list="userEmailResult" oninput="checkUser()" autocomplete="off" />
+                        <datalist id="userEmailResult">
+                            @foreach (User user in Model)
+                            {
+                                if (user.Role != "Admin")
+                                {
+                                    <option value="@user.Email" />
+                                }
+                            }
+                        </datalist>
+                        <input id="submitAdmin" type="submit" value="Bevestigen" class="btn btn-primary" disabled />
+                    }
+                </div>
+
+                <h1 class="display-4 text-center mt-3">Admins</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Gebruikersnaam
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (User user in Model)
+                        {
+                            @if (user.Role == "Admin" && user.Id != UserManager.GetUserId(User))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(m => user.UserName)
+                                    </td>
+                                    <td>
+                                        <a asp-action="DeleteRights" asp-route-id="@user.Id">Verwijder admin rechten</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-1 col-md-1"></div>
+</div>
+
+<script>
+    function checkUser()
+    {
+        var userEmail = document.getElementById("userEmail").value;
+        var usersJson = '@Html.Raw(Json.Serialize(Model))';
+        var users = JSON.parse(usersJson);
+        var exists = false;
+        
+        for (i = 0; i < users.length; i++) {
+            if (userEmail == users[i]["email"] && users[i]["role"] != 'Admin') {
+                exists = true;
+            }
+        }
+        if (exists) {
+            document.getElementById("submitAdmin").removeAttribute("disabled");
+        }
+        else {
+            document.getElementById("submitAdmin").setAttribute('disabled', 'disabled');
+        }
+    }
+</script>
